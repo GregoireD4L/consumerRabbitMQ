@@ -1,9 +1,9 @@
 server:
-  port: 8084
+  port: 5672
 spring:
   profiles: dev
   rabbitmq:
-    endpoint: amqp://rabbit_user:rabbit_password@localhost:5672/myvhost
+    endpoint: amqp://dataforlife:dataforlife2018@51.38.185.206:5672/myvhost
     exchange: logs
     queue: influxData
    influxdb:
