@@ -1,0 +1,13 @@
+server:
+      port: 5672
+spring:
+      rabbitmq:
+          endpoint: amqp://dataforlife:dataforlife2018@51.38.185.206:5672/%2f
+          exchange: logs
+          queue: influxData
+      influxdb:
+          url: http://51.38.185.205:8086
+          username: dataforlife
+          password: dataforlife2018
+          database: dataforlifeDB
+          retention-policy: autogen

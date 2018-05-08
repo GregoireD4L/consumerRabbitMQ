@@ -21,7 +21,8 @@ public class RabbitMQProperties {
 
     @NotEmpty
     @Getter
-    private String endpoint = "amqp://dataforlife:dataforlife2018@51.38.185.206:5672/%2f";
+    @Value("${spring.rabbitmq.endpoint}")
+    private String endpoint;// = "amqp://dataforlife:dataforlife2018@51.38.185.206:5672/%2f";
 
     @NotEmpty
     private String exchange;

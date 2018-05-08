@@ -7,17 +7,18 @@ import org.influxdb.dto.Point;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.influxdb.DefaultInfluxDBTemplate;
 import org.springframework.data.influxdb.InfluxDBConnectionFactory;
 import org.springframework.data.influxdb.InfluxDBProperties;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.data.influxdb.converter.PointConverter;
 
 
-//@Configuration
-//@EnableConfigurationProperties(InfluxDBProperties.class)
+@Configuration
+@EnableConfigurationProperties(InfluxDBProperties.class)
 public class InfluxDBConfig {
 
-   /* @Bean
+    @Bean
     public InfluxDBConnectionFactory influxDBConnectionFactory(final InfluxDBProperties properties) {
         return new InfluxDBConnectionFactory(properties);
     }
@@ -25,5 +26,15 @@ public class InfluxDBConfig {
     @Bean
     public InfluxDBTemplate<Point> influxDBTemplate(final InfluxDBConnectionFactory connectionFactory) {
         return new InfluxDBTemplate<>(connectionFactory, new PointConverter());
-    }*/
+    }
+
+    @Bean
+    public DefaultInfluxDBTemplate defaultTemplate(final InfluxDBConnectionFactory connectionFactory)
+    {
+        /*
+         * just dealing with Point objects from 'influxdb-java' we could
+         * also use an instance of class DefaultInfluxDBTemplate.
+         */
+        return new DefaultInfluxDBTemplate(connectionFactory);
+    }
 }

@@ -7,6 +7,7 @@ import org.influxdb.dto.Point;
  */
 public interface IInfluxDBService {
 
-    //void write(Point point);
+    void write(Point point);
+    Point buildPoint(String value);
 
 }
