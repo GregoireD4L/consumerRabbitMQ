@@ -29,7 +29,7 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
     @Override
     public void handleMessage(String message) {
         String[] trimed = message.split(",");
-        Point p = influxDBService.buildPoint(trimed[1]);
+        Point p = influxDBService.buildPoint(trimed[1], "", "");
         influxDBService.write(p);
     }
 

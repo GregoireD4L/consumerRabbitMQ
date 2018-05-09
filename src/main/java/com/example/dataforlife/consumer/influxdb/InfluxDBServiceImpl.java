@@ -1,8 +1,6 @@
 package com.example.dataforlife.consumer.influxdb;
 
 import org.influxdb.dto.Point;
-import org.influxdb.dto.QueryResult;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBConnectionFactory;
 import org.springframework.data.influxdb.InfluxDBTemplate;
@@ -26,7 +24,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
         influxDBTemplate.write(point);
     }
 
-    public Point buildPoint(String value){
+    public Point buildPoint(String value, String idUser, String measurement){
         final Point p = Point.measurement("ecg")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .tag("dataforlife", "test")

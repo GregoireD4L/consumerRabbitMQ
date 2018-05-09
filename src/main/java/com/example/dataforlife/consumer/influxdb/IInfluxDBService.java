@@ -8,6 +8,6 @@ import org.influxdb.dto.Point;
 public interface IInfluxDBService {
 
     void write(Point point);
-    Point buildPoint(String value);
+    Point buildPoint(String value, String idUser, String measurement);
 
 }
