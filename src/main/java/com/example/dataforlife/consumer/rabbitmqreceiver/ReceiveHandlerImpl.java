@@ -11,11 +11,9 @@ import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-
-
+import org.apache.commons.codec.binary.Hex;
 /**
  * Created by kokoghlanian on 07/05/2018.
  */
@@ -34,11 +32,12 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
             })
     )
     @Override
-    public void handleMessage(String message) {
+    public void handleMessage(String  message) {
 
+        String messageString = Hex.encodeHexString(message.getBytes()); // for UTF-8 encoding
         IPointService pointService = new EcgPointServiceImpl();
-        System.out.println("LOG KOKO  : " + message);
-        List<Double> points  =  pointService.getPointsArrayList(message,1);
+        System.out.println("LOG KOKO  : " + messageString);
+        List<Double> points  =  pointService.getPointsArrayList(messageString,1);
         influxDBService.createPointInInflux(points,"ecgChannelOne","1");
         //Point p = influxDBService.buildPoint(trimed[1], "", "");
         //influxDBService.write(p);
