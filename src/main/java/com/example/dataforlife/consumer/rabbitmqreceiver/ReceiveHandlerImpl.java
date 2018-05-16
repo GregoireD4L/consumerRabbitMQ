@@ -35,7 +35,7 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
     public void handleMessage(@Payload CustomMessage message) {
 
         IPointService pointService = new EcgPointServiceImpl();
-        System.out.println("Consumer :: handleMessage : " + message.getData());
+        //System.out.println("Consumer :: handleMessage : " + message.getData());
         List<Double> points  =  pointService.getPointsArrayList(message.getData(),2);
         influxDBService.createPointInInflux(points,"ecgChannelOne",message.getId());
 
