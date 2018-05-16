@@ -9,10 +9,10 @@ public class EcgPointServiceImpl implements IPointService {
 
 
     @Override
-    public ArrayList<Double> getPointsArrayList(String data, int mChannelSelected) {
+    public ArrayList<Double> getPointsArrayList(String data, int channelSelected) {
 
         ArrayList<Double> dataList = this.getDataFromString(data);
-        ArrayList<Double> ecgData = createData(dataList, mChannelSelected);
+        ArrayList<Double> ecgData = createData(dataList, channelSelected);
         return ecgData;
     }
 

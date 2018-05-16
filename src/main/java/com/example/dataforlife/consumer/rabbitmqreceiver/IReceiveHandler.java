@@ -1,6 +1,7 @@
 package com.example.dataforlife.consumer.rabbitmqreceiver;
 
 
+import com.example.dataforlife.consumer.model.CustomMessage;
 import org.springframework.messaging.handler.annotation.Payload;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.messaging.handler.annotation.Payload;
  */
 public interface IReceiveHandler {
 
-    void handleMessage(String message);
+    void handleMessage(@Payload CustomMessage message);
 }

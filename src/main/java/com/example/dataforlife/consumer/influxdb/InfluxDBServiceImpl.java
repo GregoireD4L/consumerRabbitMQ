@@ -1,9 +1,6 @@
 package com.example.dataforlife.consumer.influxdb;
 
-import com.example.dataforlife.consumer.pointservice.IPointService;
-import javafx.fxml.FXML;
-import org.influxdb.InfluxDB;
-import org.influxdb.dto.BatchPoints;
+
 import org.influxdb.dto.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBConnectionFactory;

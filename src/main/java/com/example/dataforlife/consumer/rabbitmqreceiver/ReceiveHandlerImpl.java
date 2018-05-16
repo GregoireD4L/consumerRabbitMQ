@@ -2,13 +2,13 @@ package com.example.dataforlife.consumer.rabbitmqreceiver;
 
 
 import com.example.dataforlife.consumer.influxdb.IInfluxDBService;
+import com.example.dataforlife.consumer.model.CustomMessage;
 import com.example.dataforlife.consumer.pointservice.EcgPointServiceImpl;
 import com.example.dataforlife.consumer.pointservice.IPointService;
-import org.influxdb.dto.Point;
-import org.slf4j.Logger;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 
@@ -32,15 +32,13 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
             })
     )
     @Override
-    public void handleMessage(String  message) {
+    public void handleMessage(@Payload CustomMessage message) {
 
-        String messageString = Hex.encodeHexString(message.getBytes()); // for UTF-8 encoding
         IPointService pointService = new EcgPointServiceImpl();
-        System.out.println("LOG KOKO  : " + messageString);
-        List<Double> points  =  pointService.getPointsArrayList(messageString,1);
-        influxDBService.createPointInInflux(points,"ecgChannelOne","1");
-        //Point p = influxDBService.buildPoint(trimed[1], "", "");
-        //influxDBService.write(p);
+        System.out.println("Consumer :: handleMessage : " + message.getData());
+        List<Double> points  =  pointService.getPointsArrayList(message.getData(),2);
+        influxDBService.createPointInInflux(points,"ecgChannelOne",message.getId());
+
     }
 
 }

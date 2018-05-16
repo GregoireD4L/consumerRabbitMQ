@@ -3,6 +3,7 @@ package com.example.dataforlife.consumer.config;
 import com.example.dataforlife.consumer.properties.RabbitMQProperties;
 import com.example.dataforlife.consumer.rabbitmqreceiver.ReceiveHandlerImpl;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,10 +26,15 @@ public class RabbitMqConfig {
     @Autowired
     RabbitMQProperties rabbitMQProperties;
 
+    @Bean
+    public Jackson2JsonMessageConverter jackson2MessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        ConnectionFactory connectionFactory = new CachingConnectionFactory(URI.create(rabbitMQProperties.getEndpoint()));
+            ConnectionFactory connectionFactory = new CachingConnectionFactory(URI.create(rabbitMQProperties.getEndpoint()));
         return connectionFactory;
     }
 
@@ -36,8 +42,9 @@ public class RabbitMqConfig {
     public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setConcurrentConsumers(3);
-        factory.setMaxConcurrentConsumers(10);
+        factory.setMessageConverter(jackson2MessageConverter());
+        factory.setConcurrentConsumers(10);
+        factory.setMaxConcurrentConsumers(20);
         return factory;
     }
 

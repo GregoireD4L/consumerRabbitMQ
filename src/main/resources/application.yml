@@ -2,7 +2,7 @@ server:
       port: 5672
 spring:
       rabbitmq:
-          endpoint: amqp://dataforlife:dataforlife2018@51.38.185.206:5672/%2f
+          endpoint: amqp://dataforlife:dataforlife2018@51.38.185.206:5672/myvhost
           exchange: logs
           queue: influxData
       influxdb:
