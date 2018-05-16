@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBean {
-
+    List<Point> points = new ArrayList<>();
     @Autowired
     InfluxDBTemplate<Point> influxDBTemplate;
 
@@ -71,10 +71,14 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
             if(!pointList.isEmpty())
             {
                 ArrayList<HashMap<String,Object>> ecgMap = createHashMapForPointList(pointList,idUser);
-                List<Point> points = createPoints(measurement,ecgMap);
-                if(!points.isEmpty())
+                if(points.isEmpty())
+                    points = createPoints(measurement,ecgMap);
+                else
+                    points.addAll(createPoints(measurement,ecgMap));
+                if(!points.isEmpty()&& points.size()>=50)
                 {
                     write(points);
+                    points.clear();
                 }
             }
         }
