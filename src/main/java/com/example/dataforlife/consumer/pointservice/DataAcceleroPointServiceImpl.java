@@ -1,6 +1,8 @@
 package com.example.dataforlife.consumer.pointservice;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kokoghlanian on 11/05/2018.
@@ -8,9 +10,9 @@ import java.util.ArrayList;
 public class DataAcceleroPointServiceImpl implements IPointService {
 
     @Override
-    public ArrayList<Double> getPointsArrayList(String data, int channelSelected) {
+    public List<InfluxPoint> getPointsArrayList(String data, Instant time, int channelSelected) {
 
-        ArrayList<Double> dataSeriesList = new ArrayList<>();
+        List<InfluxPoint> dataSeriesList = new ArrayList<>();
         if (data != null) {
 
             String dataDecoded;
@@ -84,9 +86,9 @@ public class DataAcceleroPointServiceImpl implements IPointService {
                     dataDecodedZ = dataDecodedZ * 2 / 32767;
                 }
             }
-            dataSeriesList.add(dataDecodedX);
-            dataSeriesList.add(dataDecodedY);
-            dataSeriesList.add(dataDecodedZ);
+            dataSeriesList.add(new InfluxPoint(dataDecodedX,time));
+            dataSeriesList.add(new InfluxPoint(dataDecodedY,time));
+            dataSeriesList.add(new InfluxPoint(dataDecodedZ,time));
         }
         return dataSeriesList;
     }

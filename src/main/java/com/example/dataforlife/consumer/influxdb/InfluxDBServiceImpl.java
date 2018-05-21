@@ -1,12 +1,15 @@
 package com.example.dataforlife.consumer.influxdb;
 
 
+import com.example.dataforlife.consumer.pointservice.InfluxPoint;
+import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBConnectionFactory;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +26,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
     @Autowired
     InfluxDBConnectionFactory influxDBConnectionFactory;
-
+    private List<Point> points = new ArrayList<>();
     public void write(Point point) {
         influxDBTemplate.write(point);
     }
@@ -36,7 +39,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
     public Point buildPoint(HashMap<String, Object> fieldMap, String measurement){
         final Point p = Point.measurement(measurement)
-                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .time(((Instant)fieldMap.get("time")).toEpochMilli(),TimeUnit.MILLISECONDS)
                 .fields(fieldMap)
                 .build();
 
@@ -53,28 +56,37 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
     }
 
 
-    public ArrayList<HashMap<String,Object>> createHashMapForPointList(List<Double> points,String idUser){
+    public ArrayList<HashMap<String,Object>> createHashMapForPointList(List<InfluxPoint> points,String idUser){
         ArrayList<HashMap<String,Object>> resultArray = new ArrayList<>();
-        for(Double pointValue : points){
+        for(InfluxPoint pointValue : points){
             HashMap<String,Object> PointMap = new HashMap<>();
-            PointMap.put("p1",pointValue);
+            PointMap.put("p1",pointValue.getValue());
             PointMap.put("idUser",idUser);
+            PointMap.put("time",pointValue.getTimestamp());
             resultArray.add(PointMap);
         }
         return resultArray;
     }
 
     @Override
-    public void createPointInInflux(List<Double> pointList, String measurement,String idUser){
+    public void createPointInInflux(List<InfluxPoint> pointList, String measurement, String idUser){
         if(pointList != null)
         {
             if(!pointList.isEmpty())
             {
                 ArrayList<HashMap<String,Object>> ecgMap = createHashMapForPointList(pointList,idUser);
-                List<Point> points = createPoints(measurement,ecgMap);
+                this.points.addAll(createPoints(measurement,ecgMap));
                 if(!points.isEmpty())
                 {
-                    write(points);
+                    if(points.size()>=50) {
+                        Thread t = new Thread(){
+                            public void run() {
+                                write(points);
+                            }
+                        };
+                        t.run();
+                        points.clear();
+                    }
                 }
             }
         }

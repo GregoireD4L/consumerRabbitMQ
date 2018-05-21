@@ -5,6 +5,7 @@ import com.example.dataforlife.consumer.influxdb.IInfluxDBService;
 import com.example.dataforlife.consumer.model.CustomMessage;
 import com.example.dataforlife.consumer.pointservice.EcgPointServiceImpl;
 import com.example.dataforlife.consumer.pointservice.IPointService;
+import com.example.dataforlife.consumer.pointservice.InfluxPoint;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
 
         IPointService pointService = new EcgPointServiceImpl();
         //System.out.println("Consumer :: handleMessage : " + message.getData());
-        List<Double> points  =  pointService.getPointsArrayList(message.getData(),2);
+        List<InfluxPoint> points  =  pointService.getPointsArrayList(message.getData(),message.getTime(),2);
         influxDBService.createPointInInflux(points,"ecgChannelOne",message.getId());
 
     }

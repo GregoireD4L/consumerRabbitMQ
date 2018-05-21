@@ -1,6 +1,8 @@
 package com.example.dataforlife.consumer.pointservice;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kokoghlanian on 09/05/2018.
@@ -9,10 +11,10 @@ public class EcgPointServiceImpl implements IPointService {
 
 
     @Override
-    public ArrayList<Double> getPointsArrayList(String data, int channelSelected) {
+    public List<InfluxPoint> getPointsArrayList(String data, Instant time, int channelSelected) {
 
-        ArrayList<Double> dataList = this.getDataFromString(data);
-        ArrayList<Double> ecgData = createData(dataList, channelSelected);
+        List<Double> dataList = this.getDataFromString(data);
+        List<InfluxPoint> ecgData = createData(dataList,time, channelSelected);
         return ecgData;
     }
 
@@ -34,11 +36,11 @@ public class EcgPointServiceImpl implements IPointService {
         return mDataList;
     }
 
-    private ArrayList<Double> createData(ArrayList<Double> dataList, int channelSelected){
-        ArrayList<Double> dataFromChannel = new ArrayList<>();
+    private List<InfluxPoint> createData(List<Double> dataList,Instant time, int channelSelected){
+        List<InfluxPoint> dataFromChannel = new ArrayList<>();
         if(dataList.size()> 0){
             for(int i = 0; i < 10; i++){
-                dataFromChannel.add(dataList.get(3 * i + channelSelected - 1));
+                dataFromChannel.add(new InfluxPoint(dataList.get(3 * i + channelSelected - 1),time));
             }
         }
         return dataFromChannel;
