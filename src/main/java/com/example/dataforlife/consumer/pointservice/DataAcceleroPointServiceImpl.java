@@ -8,7 +8,11 @@ import java.util.List;
  * Created by kokoghlanian on 11/05/2018.
  */
 public class DataAcceleroPointServiceImpl implements IPointService {
-
+    @Override
+    public List<InfluxPoint> getPointsArrayList(String data, Instant time) {
+        return null;
+    }
+/*
     @Override
     public List<InfluxPoint> getPointsArrayList(String data, Instant time, int channelSelected) {
 
@@ -92,4 +96,5 @@ public class DataAcceleroPointServiceImpl implements IPointService {
         }
         return dataSeriesList;
     }
+    */
 }

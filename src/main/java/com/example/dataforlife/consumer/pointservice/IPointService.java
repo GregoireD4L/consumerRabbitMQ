@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface IPointService {
 
-    List<InfluxPoint> getPointsArrayList(String data, Instant time, int mChannelSelected);
+    List<InfluxPoint> getPointsArrayList(String data, Instant time);
 }

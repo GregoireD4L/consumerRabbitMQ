@@ -1,21 +1,23 @@
 package com.example.dataforlife.consumer.pointservice;
 
 import java.time.Instant;
+import java.util.HashMap;
 
 public class InfluxPoint {
-   private double value;
+   private HashMap<String,Double> value;
    private Instant timestamp;
 
-    public InfluxPoint(double value, Instant timestamp) {
+    public InfluxPoint(HashMap<String, Double> value, Instant timestamp) {
         this.value = value;
         this.timestamp = timestamp;
     }
 
-    public double getValue() {
+    public HashMap<String, Double> getValue() {
+
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(HashMap<String, Double> value) {
         this.value = value;
     }
 

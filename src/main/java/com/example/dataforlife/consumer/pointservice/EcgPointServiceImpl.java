@@ -8,8 +8,12 @@ import java.util.List;
  * Created by kokoghlanian on 09/05/2018.
  */
 public class EcgPointServiceImpl implements IPointService {
+    @Override
+    public List<InfluxPoint> getPointsArrayList(String data, Instant time) {
+        return null;
+    }
 
-
+/*
     @Override
     public List<InfluxPoint> getPointsArrayList(String data, Instant time, int channelSelected) {
 
@@ -45,5 +49,5 @@ public class EcgPointServiceImpl implements IPointService {
         }
         return dataFromChannel;
     }
-
+*/
 }
