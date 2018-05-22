@@ -38,8 +38,8 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
     public void handleMessage(@Payload CustomMessage message) {
 
         IPointService pointService = new PointServiceImpl();
-        System.out.println("Consumer :: handleMessage : " + message.getData());
-        System.out.println(message.getTime());
+        //System.out.println("Consumer :: handleMessage : " + message.getData());
+        //System.out.println(message.getTime());
         List<InfluxPoint> points  =  pointService.getPointsArrayList(message.getData(),Instant.ofEpochMilli(message.getTime()));
         influxDBService.createPointInInflux(points,"allPoints",message.getId());
 

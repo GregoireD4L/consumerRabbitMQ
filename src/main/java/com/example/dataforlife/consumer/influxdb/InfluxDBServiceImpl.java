@@ -78,11 +78,24 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
                 this.points.addAll(createPoints(measurement,ecgMap));
                 if(!points.isEmpty())
                 {
-                   // if(points.size()>=50) {
-
-                                write(points);
-                            points.clear();
-                    //    }
+                     if(points.size()>=5) {
+                            Thread t = new Thread(){
+                                @Override
+                                public void run() {
+                                    write(points);
+                                }
+                            };
+                            t.run();
+                        /* try {
+                             System.out.println("in");
+                             while(t.isAlive())
+                                 TimeUnit.SECONDS.sleep(2);
+                             System.out.println("out");
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }*/
+                         points.clear();
+                        }
 
 
                 }
