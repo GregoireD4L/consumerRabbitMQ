@@ -6,6 +6,7 @@ import com.example.dataforlife.consumer.model.CustomMessage;
 import com.example.dataforlife.consumer.pointservice.EcgPointServiceImpl;
 import com.example.dataforlife.consumer.pointservice.IPointService;
 import com.example.dataforlife.consumer.pointservice.InfluxPoint;
+import com.example.dataforlife.consumer.pointservice.PointServiceImpl;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 
+import java.time.Instant;
 import java.util.List;
 import org.apache.commons.codec.binary.Hex;
 /**
@@ -35,10 +37,11 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
     @Override
     public void handleMessage(@Payload CustomMessage message) {
 
-        IPointService pointService = new EcgPointServiceImpl();
-        //System.out.println("Consumer :: handleMessage : " + message.getData());
-        List<InfluxPoint> points  =  pointService.getPointsArrayList(message.getData(),message.getTime(),2);
-        influxDBService.createPointInInflux(points,"ecgChannelOne",message.getId());
+        IPointService pointService = new PointServiceImpl();
+        System.out.println("Consumer :: handleMessage : " + message.getData());
+        System.out.println(message.getTime());
+        List<InfluxPoint> points  =  pointService.getPointsArrayList(message.getData(),Instant.ofEpochMilli(message.getTime()));
+        influxDBService.createPointInInflux(points,"allPoints",message.getId());
 
     }
 

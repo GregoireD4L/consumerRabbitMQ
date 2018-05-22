@@ -79,14 +79,12 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
                 if(!points.isEmpty())
                 {
                     if(points.size()>=50) {
-                        Thread t = new Thread(){
-                            public void run() {
+
                                 write(points);
-                            }
-                        };
-                        t.run();
-                        points.clear();
-                    }
+                            points.clear();
+                        }
+
+
                 }
             }
         }

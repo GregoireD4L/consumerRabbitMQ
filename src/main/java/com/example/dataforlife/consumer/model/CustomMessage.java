@@ -14,5 +14,5 @@ public class CustomMessage implements Serializable {
 
     private String data;
     private String id;
-    private Instant time;
+    private long time;
 }
