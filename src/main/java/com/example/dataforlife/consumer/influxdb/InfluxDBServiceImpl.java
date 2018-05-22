@@ -62,7 +62,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
             HashMap<String,Object> PointMap = new HashMap<>();
             PointMap.putAll(pointValue.getValue());
             PointMap.put("idUser",idUser);
-            PointMap.put("time",pointValue.getTimestamp());
+            PointMap.put("time",pointValue.getTimestamp().toEpochMilli());
             resultArray.add(PointMap);
         }
         return resultArray;
