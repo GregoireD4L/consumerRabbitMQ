@@ -39,7 +39,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
     public Point buildPoint(HashMap<String, Object> fieldMap, String measurement){
         final Point p = Point.measurement(measurement)
-                .time(((Instant)fieldMap.get("time")).toEpochMilli(),TimeUnit.MILLISECONDS)
+                .time((long)fieldMap.get("time"),TimeUnit.MILLISECONDS)
                 .fields(fieldMap)
                 .build();
 
@@ -78,11 +78,11 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
                 this.points.addAll(createPoints(measurement,ecgMap));
                 if(!points.isEmpty())
                 {
-                    if(points.size()>=50) {
+                   // if(points.size()>=50) {
 
                                 write(points);
                             points.clear();
-                        }
+                    //    }
 
 
                 }
