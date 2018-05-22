@@ -87,10 +87,10 @@ public class PointServiceImpl implements IPointService {
         return dataSeriesMap;
     }
 
-    public HashMap<String, Double> getPointsMapECG1(String data) {
+    public HashMap<String, Double> getPointsMapECG(String data, int channelSelected) {
 
         List<Double> dataList = this.getDataFromString(data);
-        HashMap<String, Double> ecgData = createData(dataList);
+        HashMap<String, Double> ecgData = createData(dataList,channelSelected);
         return ecgData;
     }
 
@@ -112,14 +112,81 @@ public class PointServiceImpl implements IPointService {
         return mDataList;
     }
 
-    private HashMap<String, Double> createData(List<Double> dataList) {
+    private HashMap<String, Double> createData(List<Double> dataList, int channelSelected) {
         HashMap<String, Double> dataFromChannel = new HashMap<>();
         if (dataList.size() > 0) {
             for (int i = 0; i < 10; i++) {
-                dataFromChannel.put("ecg1", dataList.get(3 * i + 1));
+                dataFromChannel.put("ecg"+channelSelected, dataList.get(3 * i + channelSelected - 1));
             }
         }
         return dataFromChannel;
+    }
+
+    private HashMap<String, Double> getPointsMapRespiration(String data){
+
+        HashMap<String, Double> dataSeriesMap = new HashMap<>();
+
+        if (data != null) {
+            final String[] dataList = data.split("\n");
+            final String dataDecoded = dataList[dataList.length - 1].replace(" ", "");
+            final double dataDecodedT = Integer.parseInt(dataDecoded.substring(120, 124), 16);
+            final double dataDecodedA = Integer.parseInt(dataDecoded.substring(124, 128), 16);
+            dataSeriesMap.put("respiThorax",dataDecodedT);
+            dataSeriesMap.put("respiAbdominal",dataDecodedA);
+        }
+        return dataSeriesMap;
+    }
+
+    private HashMap<String, Double> getPointsMapSpo2Chan1(String data) {
+
+        HashMap<String, Double> dataSeriesMap = new HashMap<>();
+        if (data != null) {
+
+            final String[] dataList = data.split("\n");
+            final String dataDecoded = dataList[dataList.length - 1].replace(" ", "");
+
+            double dataDecodedR1MSB = Integer.parseInt(dataDecoded.substring(173, 174), 16);
+            double dataDecodedR1LSB = Integer.parseInt(dataDecoded.substring(174, 178), 16);
+            double dataDecodedR2MSB = Integer.parseInt(dataDecoded.substring(185, 186), 16);
+            double dataDecodedR2LSB = Integer.parseInt(dataDecoded.substring(186, 190), 16);
+
+
+            dataSeriesMap.put("Spo2Chan1-1",dataDecodedR1LSB + ((dataDecodedR1MSB % 2) + ((dataDecodedR1MSB - (dataDecodedR1MSB % 2)) % 4)) * 65536);
+            dataSeriesMap.put("SpO2Chan1-2",dataDecodedR2LSB + ((dataDecodedR2MSB % 2) + ((dataDecodedR2MSB - (dataDecodedR2MSB % 2)) % 4)) * 65536);
+        }
+        return dataSeriesMap;
+    }
+
+    private HashMap<String, Double> getPointsMapSpo2Chan2(String data) {
+
+        HashMap<String, Double> dataSeriesMap = new HashMap<>();
+        if (data != null) {
+
+            final String[] dataList = data.split("\n");
+            final String dataDecoded = dataList[dataList.length - 1].replace(" ", "");
+
+            double dataDecodedIr1MSB = Integer.parseInt(dataDecoded.substring(179, 180), 16);
+            double dataDecodedIr1LSB = Integer.parseInt(dataDecoded.substring(180, 184), 16);
+            double dataDecodedIr2MSB = Integer.parseInt(dataDecoded.substring(191, 192), 16);
+            double dataDecodedIr2LSB = Integer.parseInt(dataDecoded.substring(192, 196), 16);
+
+            dataSeriesMap.put("Spo2Chan2-1",dataDecodedIr1LSB + ((dataDecodedIr1MSB % 2) + ((dataDecodedIr1MSB - (dataDecodedIr1MSB % 2)) % 4)) * 65536);
+            dataSeriesMap.put("Spo2Chan2-2",dataDecodedIr2LSB + ((dataDecodedIr2MSB % 2) + ((dataDecodedIr2MSB - (dataDecodedIr2MSB % 2)) % 4)) * 65536);
+        }
+        return dataSeriesMap;
+    }
+
+
+    private HashMap<String, Double> getPointsMapTemperature(String data){
+
+        HashMap<String, Double> dataSeriesMap = new HashMap<>();
+        if (data != null) {
+            final String[] dataList = data.split("\n");
+            final String dataDecoded = dataList[dataList.length - 1].replace(" ", "");
+            final double dataDecodedTemp = Integer.parseInt(dataDecoded.substring(196, 200), 16);
+            dataSeriesMap.put("temp",dataDecodedTemp);
+        }
+        return dataSeriesMap;
     }
 
     @Override
@@ -127,7 +194,13 @@ public class PointServiceImpl implements IPointService {
         List<InfluxPoint> list = new ArrayList<>();
         HashMap<String, Double> map = new HashMap<>();
         map.putAll(this.getPointsMapAccelero(data));
-        map.putAll(this.getPointsMapECG1(data));
+        map.putAll(this.getPointsMapECG(data,1));
+        map.putAll(this.getPointsMapECG(data,2));
+        map.putAll(this.getPointsMapECG(data,3));
+        map.putAll(this.getPointsMapRespiration(data));
+        map.putAll(this.getPointsMapTemperature(data));
+        map.putAll(this.getPointsMapSpo2Chan1(data));
+        map.putAll(this.getPointsMapSpo2Chan2(data));
         list.add(new InfluxPoint(map,time));
         return list;
     }
