@@ -192,7 +192,7 @@ public class PointServiceImpl implements IPointService {
     @Override
     public List<InfluxPoint> getPointsArrayList(String data, Instant time) {
         List<InfluxPoint> list = new ArrayList<>();
-        HashMap<String, Double> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         map.putAll(this.getPointsMapAccelero(data));
         map.putAll(this.getPointsMapECG(data,1));
         map.putAll(this.getPointsMapECG(data,2));

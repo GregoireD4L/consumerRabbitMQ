@@ -11,7 +11,6 @@ import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +27,10 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
     @Autowired
     InfluxDBConnectionFactory influxDBConnectionFactory;
-    private List<InfluxPoint> points = new ArrayList<>();
 
 
     public void write(Point point) {
-        InfluxDB influxDB= InfluxSingleton.getInstance();
+        InfluxDB influxDB = InfluxSingleton.getInstance();
         //influxDBTemplate.write(point);
         influxDB.write(point);
         System.out.println(point.toString());
@@ -51,8 +49,9 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
             e.printStackTrace();
         }
     }
+
     public void write(BatchPoints bp) {
-        InfluxDB influxDB= InfluxSingleton.getInstance();
+        InfluxDB influxDB = InfluxSingleton.getInstance();
         influxDB.write(bp);
         try {
             TimeUnit.SECONDS.sleep(10);
@@ -98,22 +97,14 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
         if (pointList != null) {
             if (!pointList.isEmpty()) {
-                points.addAll(pointList);
-                if(points.size()>=5) {
-                    Thread t = new Thread() {
-                        @Override
-                        public void run() {
-                            super.run();
-                            createPoints(measurement, pointList, idUser);
-                        }
-                    };
-                    t.run();
-                    points.clear();
-                }
+
+                    createPoints(measurement, pointList, idUser);
+
+
                 //if (!points.isEmpty()) {
 
 
-                  //  write(bp);
+                //  write(bp);
 
 
                         /* try {
@@ -133,13 +124,26 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
     }
 
     private void createPoints(String measurement, List<InfluxPoint> pointList, String idUser) {
-    InfluxDB influxDB= InfluxSingleton.getInstance();
-    BatchPoints batchPoints= BatchPoints.database("dataforlifeDB").build();
-        for(InfluxPoint point : pointList){
-            Point p = Point.measurement(measurement).fields(point.getValue()).addField("ID",idUser).addField("timestamp",point.getTimestamp().toEpochMilli()).build();
+        InfluxDB influxDB = InfluxSingleton.getInstance();
+        BatchPoints batchPoints = BatchPoints.database("dataforlifeDB").build();
+        System.out.println(batchPoints);
+        int cpt=0;
+        for (InfluxPoint point : pointList) {
+            cpt++;
+            Point p = Point.measurement(measurement).time(point.getTimestamp().toEpochMilli()*1000+cpt,TimeUnit.NANOSECONDS).fields(point.getValue()).addField("ID", idUser).addField("timestamp", point.getTimestamp().toEpochMilli()).build();
             batchPoints.point(p);
+
+
         }
+        System.out.println(batchPoints);
+        System.out.println("batchpoint : " + batchPoints.getPoints().size() + "           " + pointList.size()+"     "+batchPoints.getPoints().get(0).toString()+"     "+batchPoints.getPoints().get(1).toString());
+
+
+
         influxDB.write(batchPoints);
+        influxDB.flush();
+
+
     }
     /*@Override
     public void afterPropertiesSet() throws Exception {

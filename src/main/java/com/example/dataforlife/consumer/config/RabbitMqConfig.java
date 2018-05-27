@@ -43,8 +43,8 @@ public class RabbitMqConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(jackson2MessageConverter());
-        factory.setConcurrentConsumers(10);
-        factory.setMaxConcurrentConsumers(20);
+        factory.setConcurrentConsumers(100);
+        factory.setMaxConcurrentConsumers(200);
         return factory;
     }
 
