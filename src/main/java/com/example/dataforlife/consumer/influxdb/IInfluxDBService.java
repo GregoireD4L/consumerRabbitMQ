@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface IInfluxDBService {
 
-    void createPointInInflux(List<InfluxPoint> pointList, String measurement, String idUser);
+    void createPointInInflux(List<InfluxPoint> pointList, String measurement, String idUser) ;
 }

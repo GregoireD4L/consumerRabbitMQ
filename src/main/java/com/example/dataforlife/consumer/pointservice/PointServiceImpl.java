@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PointServiceImpl implements IPointService {
 
@@ -125,10 +126,32 @@ public class PointServiceImpl implements IPointService {
     @Override
     public List<InfluxPoint> getPointsArrayList(String data, Instant time) {
         List<InfluxPoint> list = new ArrayList<>();
-        HashMap<String, Double> map = new HashMap<>();
-        map.putAll(this.getPointsMapAccelero(data));
-        map.putAll(this.getPointsMapECG1(data));
-        list.add(new InfluxPoint(map,time));
+        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Double>accelero=this.getPointsMapAccelero(data);
+        HashMap<String, Double>ecg1= this.getPointsMapECG1(data);
+        for (String key : accelero.keySet()) {
+            if (key == null || accelero.get(key) == null) {
+                System.out.println("accelero");
+                try {
+                    TimeUnit.SECONDS.sleep(30);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        for (String key : ecg1.keySet()) {
+            if (key == null || ecg1.get(key) == null) {
+                System.out.println("ecg1");
+                try {
+                    TimeUnit.SECONDS.sleep(30);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        map.putAll(accelero);
+        map.putAll(ecg1);
+        list.add(new InfluxPoint(map, time));
         return list;
     }
 }

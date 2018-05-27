@@ -11,3 +11,6 @@ spring:
           password: dataforlife2018
           database: dataforlifeDB
           retention-policy: autogen
+          connect-timeout: 1000
+          read-timeout: 3000
+          write-timeout: 1000
