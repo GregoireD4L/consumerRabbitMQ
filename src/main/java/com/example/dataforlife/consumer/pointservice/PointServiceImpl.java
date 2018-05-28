@@ -87,10 +87,10 @@ public class PointServiceImpl implements IPointService {
         return dataSeriesMap;
     }
 
-    public HashMap<String, Double> getPointsMapECG(String data, int channelSelected) {
+    public HashMap<String, Double> getPointsMapECG(String data, int channelSelected,int index) {
 
         List<Double> dataList = this.getDataFromString(data);
-        HashMap<String, Double> ecgData = createData(dataList,channelSelected);
+        HashMap<String, Double> ecgData = createData(dataList,channelSelected,index);
         return ecgData;
     }
 
@@ -112,12 +112,12 @@ public class PointServiceImpl implements IPointService {
         return mDataList;
     }
 
-    private HashMap<String, Double> createData(List<Double> dataList, int channelSelected) {
+    private HashMap<String, Double> createData(List<Double> dataList, int channelSelected,int index) {
         HashMap<String, Double> dataFromChannel = new HashMap<>();
-        if (dataList.size() > 0) {
-            for (int i = 0; i < 10; i++) {
-                dataFromChannel.put("ecg"+channelSelected, dataList.get(3 * i + channelSelected - 1));
-            }
+        if (dataList.size() > 3 * index + channelSelected - 1) {
+
+                dataFromChannel.put("ecg"+channelSelected, dataList.get(3 * index + channelSelected - 1));
+
         }
         return dataFromChannel;
     }
@@ -192,16 +192,18 @@ public class PointServiceImpl implements IPointService {
     @Override
     public List<InfluxPoint> getPointsArrayList(String data, Instant time) {
         List<InfluxPoint> list = new ArrayList<>();
-        HashMap<String, Object> map = new HashMap<>();
-        map.putAll(this.getPointsMapAccelero(data));
-        map.putAll(this.getPointsMapECG(data,1));
-        map.putAll(this.getPointsMapECG(data,2));
-        map.putAll(this.getPointsMapECG(data,3));
-        map.putAll(this.getPointsMapRespiration(data));
-        map.putAll(this.getPointsMapTemperature(data));
-        map.putAll(this.getPointsMapSpo2Chan1(data));
-        map.putAll(this.getPointsMapSpo2Chan2(data));
-        list.add(new InfluxPoint(map,time));
+        for(int i=0;i<10;i++) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.putAll(this.getPointsMapAccelero(data));
+            map.putAll(this.getPointsMapECG(data, 1, i));
+            map.putAll(this.getPointsMapECG(data, 2, i));
+            map.putAll(this.getPointsMapECG(data, 3, i));
+            map.putAll(this.getPointsMapRespiration(data));
+            map.putAll(this.getPointsMapTemperature(data));
+            map.putAll(this.getPointsMapSpo2Chan1(data));
+            map.putAll(this.getPointsMapSpo2Chan2(data));
+            list.add(new InfluxPoint(map, time));
+        }
         return list;
     }
 }

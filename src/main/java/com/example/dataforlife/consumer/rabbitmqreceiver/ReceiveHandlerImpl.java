@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ReceiveHandlerImpl implements IReceiveHandler {
     static int cpt = 0;
-    static List<InfluxPoint> points ;
+    static List<InfluxPoint> points;
     @Autowired
     IInfluxDBService influxDBService;
 
@@ -37,18 +37,18 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
     )
     @Override
     public void handleMessage(@Payload CustomMessage message) {
-    if(points==null)
-        points= new ArrayList<InfluxPoint>();
+        if (points == null)
+            points = new ArrayList<InfluxPoint>();
         IPointService pointService = new PointServiceImpl();
         synchronized (points) {
             points.addAll(pointService.getPointsArrayList(message.getData(), Instant.ofEpochMilli(message.getTime())));
 
-            if (points.size() >=500) {
-                        influxDBService.createPointInInflux(points, "allPoints", message.getId());
+            if (points.size() >= 500) {
+                influxDBService.createPointInInflux(points, "allPoints", message.getId());
 
-                        points.clear();
-
-                    }
+                points.clear();
+               
+            }
 
             //}
             System.out.println(++cpt + "   " + points.size() + "   " + message.getTime());
