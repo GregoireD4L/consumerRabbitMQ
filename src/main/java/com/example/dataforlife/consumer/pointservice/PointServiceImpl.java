@@ -18,9 +18,9 @@ public class PointServiceImpl implements IPointService {
             double dataDecodedZ;
             String[] dataList = data.split("\n");
             dataDecoded = dataList[dataList.length - 1].replace(" ", "");
-            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(24, 36).substring(0, 4), 16);
-            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(24, 36).substring(4, 8), 16);
-            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(24, 36).substring(8, 12), 16);
+            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(148, 160).substring(0, 4), 16);
+            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(148, 160).substring(4, 8), 16);
+            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(148, 160).substring(8, 12), 16);
 
             if (dataDecodedX > 32767) {
                 dataDecodedX = (-65536 + dataDecodedX) * 2 / 32768;
@@ -37,12 +37,12 @@ public class PointServiceImpl implements IPointService {
             } else {
                 dataDecodedZ = dataDecodedZ * 2 / 32767;
             }
-            dataSeriesMap.put("acceleroX1", dataDecodedX);
-            dataSeriesMap.put("acceleroY1", dataDecodedY);
-            dataSeriesMap.put("acceleroZ1", dataDecodedZ);
-            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(12, 24).substring(0, 4), 16);
-            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(12, 24).substring(4, 8), 16);
-            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(12, 24).substring(8, 12), 16);
+            dataSeriesMap.put("acceleroX", dataDecodedX);
+            dataSeriesMap.put("acceleroY", dataDecodedY);
+            dataSeriesMap.put("acceleroZ", dataDecodedZ);
+            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(136, 148).substring(0, 4), 16);
+            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(136, 148).substring(4, 8), 16);
+            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(136, 148).substring(8, 12), 16);
             if (dataDecodedX > 32767) {
                 dataDecodedX = (-65536 + dataDecodedX) * 250 / 32768;
             } else {
@@ -58,12 +58,12 @@ public class PointServiceImpl implements IPointService {
             } else {
                 dataDecodedZ = dataDecodedZ * 250 / 32767;
             }
-            dataSeriesMap.put("acceleroX2", dataDecodedX);
-            dataSeriesMap.put("acceleroY2", dataDecodedY);
-            dataSeriesMap.put("acceleroZ2", dataDecodedZ);
-            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(0, 12).substring(0, 4), 16);
-            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(0, 12).substring(4, 8), 16);
-            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(0, 12).substring(8, 12), 16);
+            dataSeriesMap.put("GyrosX", dataDecodedX);
+            dataSeriesMap.put("GyrosY", dataDecodedY);
+            dataSeriesMap.put("GyrozZ", dataDecodedZ);
+            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(124, 136).substring(0, 4), 16);
+            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(124, 136).substring(4, 8), 16);
+            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(124, 136).substring(8, 12), 16);
             if (dataDecodedX > 32767) {
                 dataDecodedX = (-65536 + dataDecodedX) * 2 / 32768;
             } else {
@@ -80,9 +80,9 @@ public class PointServiceImpl implements IPointService {
                 dataDecodedZ = dataDecodedZ * 2 / 32767;
             }
 
-            dataSeriesMap.put("acceleroX3", dataDecodedX);
-            dataSeriesMap.put("acceleroY3", dataDecodedY);
-            dataSeriesMap.put("acceleroZ3", dataDecodedZ);
+            dataSeriesMap.put("magnetoX", dataDecodedX);
+            dataSeriesMap.put("magnetoY", dataDecodedY);
+            dataSeriesMap.put("magnetoZ", dataDecodedZ);
         }
         return dataSeriesMap;
     }
@@ -151,8 +151,8 @@ public class PointServiceImpl implements IPointService {
             double dataDecodedR2LSB = Integer.parseInt(dataDecoded.substring(186, 190), 16);
 
 
-            dataSeriesMap.put("Spo2Chan1-1",dataDecodedR1LSB + ((dataDecodedR1MSB % 2) + ((dataDecodedR1MSB - (dataDecodedR1MSB % 2)) % 4)) * 65536);
-            dataSeriesMap.put("SpO2Chan1-2",dataDecodedR2LSB + ((dataDecodedR2MSB % 2) + ((dataDecodedR2MSB - (dataDecodedR2MSB % 2)) % 4)) * 65536);
+            dataSeriesMap.put("Spo2Chan1_1",dataDecodedR1LSB + ((dataDecodedR1MSB % 2) + ((dataDecodedR1MSB - (dataDecodedR1MSB % 2)) % 4)) * 65536);
+            dataSeriesMap.put("SpO2Chan1_2",dataDecodedR2LSB + ((dataDecodedR2MSB % 2) + ((dataDecodedR2MSB - (dataDecodedR2MSB % 2)) % 4)) * 65536);
         }
         return dataSeriesMap;
     }
@@ -170,8 +170,8 @@ public class PointServiceImpl implements IPointService {
             double dataDecodedIr2MSB = Integer.parseInt(dataDecoded.substring(191, 192), 16);
             double dataDecodedIr2LSB = Integer.parseInt(dataDecoded.substring(192, 196), 16);
 
-            dataSeriesMap.put("Spo2Chan2-1",dataDecodedIr1LSB + ((dataDecodedIr1MSB % 2) + ((dataDecodedIr1MSB - (dataDecodedIr1MSB % 2)) % 4)) * 65536);
-            dataSeriesMap.put("Spo2Chan2-2",dataDecodedIr2LSB + ((dataDecodedIr2MSB % 2) + ((dataDecodedIr2MSB - (dataDecodedIr2MSB % 2)) % 4)) * 65536);
+            dataSeriesMap.put("Spo2Chan2_1",dataDecodedIr1LSB + ((dataDecodedIr1MSB % 2) + ((dataDecodedIr1MSB - (dataDecodedIr1MSB % 2)) % 4)) * 65536);
+            dataSeriesMap.put("Spo2Chan2_2",dataDecodedIr2LSB + ((dataDecodedIr2MSB % 2) + ((dataDecodedIr2MSB - (dataDecodedIr2MSB % 2)) % 4)) * 65536);
         }
         return dataSeriesMap;
     }
