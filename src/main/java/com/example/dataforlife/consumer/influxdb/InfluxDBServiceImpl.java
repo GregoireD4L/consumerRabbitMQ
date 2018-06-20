@@ -126,7 +126,6 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
     private void createPoints(String measurement, List<InfluxPoint> pointList, String idUser) {
         InfluxDB influxDB = InfluxSingleton.getInstance();
         BatchPoints batchPoints = BatchPoints.database("dataforlifeDB").build();
-        System.out.println(batchPoints);
         int cpt=0;
         for (InfluxPoint point : pointList) {
             cpt++;
@@ -135,8 +134,8 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
 
         }
-        System.out.println(batchPoints);
-        System.out.println("batchpoint : " + batchPoints.getPoints().size() + "           " + pointList.size()+"     "+batchPoints.getPoints().get(0).toString()+"     "+batchPoints.getPoints().get(1).toString());
+      //  System.out.println(batchPoints);
+       // System.out.println("batchpoint : " + batchPoints.getPoints().size() + "           " + pointList.size()+"     "+batchPoints.getPoints().get(0).toString()+"     "+batchPoints.getPoints().get(1).toString());
 
 
 

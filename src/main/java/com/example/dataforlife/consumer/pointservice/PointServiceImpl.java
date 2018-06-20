@@ -1,6 +1,8 @@
 package com.example.dataforlife.consumer.pointservice;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -202,6 +204,7 @@ public class PointServiceImpl implements IPointService {
             map.putAll(this.getPointsMapTemperature(data));
             map.putAll(this.getPointsMapSpo2Chan1(data));
             map.putAll(this.getPointsMapSpo2Chan2(data));
+            time.plus(2, ChronoUnit.MILLIS);
             list.add(new InfluxPoint(map, time));
         }
         return list;

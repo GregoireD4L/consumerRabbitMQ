@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class ReceiveHandlerImpl implements IReceiveHandler {
-    static int cpt = 0;
+   // static int cpt = 0;
     static List<InfluxPoint> points;
     @Autowired
     IInfluxDBService influxDBService;
@@ -51,7 +51,7 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
             }
 
             //}
-            System.out.println(++cpt + "   " + points.size() + "   " + message.getTime());
+           // System.out.println(++cpt + "   " + points.size() + "   " + message.getTime());
         }
 
     }
