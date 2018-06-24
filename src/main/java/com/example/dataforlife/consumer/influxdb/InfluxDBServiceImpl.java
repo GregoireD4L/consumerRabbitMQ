@@ -2,6 +2,7 @@ package com.example.dataforlife.consumer.influxdb;
 
 
 import com.example.dataforlife.consumer.pointservice.InfluxPoint;
+import com.example.dataforlife.consumer.security.Encrypter;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
@@ -10,6 +11,13 @@ import org.springframework.data.influxdb.InfluxDBConnectionFactory;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,7 +137,25 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
         int cpt=0;
         for (InfluxPoint point : pointList) {
             cpt++;
-            Point p = Point.measurement(measurement).time(point.getTimestamp().toEpochMilli()*1000+cpt,TimeUnit.NANOSECONDS).fields(point.getValue()).addField("ID", idUser).addField("timestamp", point.getTimestamp().toEpochMilli()).build();
+            Point p = null;
+            try {
+                System.out.println("in");
+                p = Point.measurement(measurement).time(point.getTimestamp().toEpochMilli(), TimeUnit.MILLISECONDS).fields(point.getValue()).addField("ID", Encrypter.encrypt(idUser)).addField("timestamp", point.getTimestamp().toEpochMilli()).build();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
             batchPoints.point(p);
 
 

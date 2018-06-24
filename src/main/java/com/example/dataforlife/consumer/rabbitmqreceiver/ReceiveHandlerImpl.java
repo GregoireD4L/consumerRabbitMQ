@@ -45,7 +45,6 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
 
             if (points.size() >= 500) {
                 influxDBService.createPointInInflux(points, "allPoints", message.getId());
-
                 points.clear();
                
             }
