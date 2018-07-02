@@ -18,9 +18,9 @@ public class PointServiceImpl implements IPointService {
             double dataDecodedZ;
             String[] dataList = data.split("\n");
             dataDecoded = dataList[dataList.length - 1].replace(" ", "");
-            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(24, 36).substring(0, 4), 16);
-            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(24, 36).substring(4, 8), 16);
-            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(24, 36).substring(8, 12), 16);
+            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(148, 160).substring(0, 4), 16);
+            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(148, 160).substring(4, 8), 16);
+            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(148, 160).substring(8, 12), 16);
 
             if (dataDecodedX > 32767) {
                 dataDecodedX = (-65536 + dataDecodedX) * 2 / 32768;
@@ -37,12 +37,12 @@ public class PointServiceImpl implements IPointService {
             } else {
                 dataDecodedZ = dataDecodedZ * 2 / 32767;
             }
-            dataSeriesMap.put("acceleroX1", dataDecodedX);
-            dataSeriesMap.put("acceleroY1", dataDecodedY);
-            dataSeriesMap.put("acceleroZ1", dataDecodedZ);
-            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(12, 24).substring(0, 4), 16);
-            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(12, 24).substring(4, 8), 16);
-            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(12, 24).substring(8, 12), 16);
+            dataSeriesMap.put("acceleroX", dataDecodedX);
+            dataSeriesMap.put("acceleroY", dataDecodedY);
+            dataSeriesMap.put("acceleroZ", dataDecodedZ);
+            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(136, 148).substring(0, 4), 16);
+            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(136, 148).substring(4, 8), 16);
+            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(136, 148).substring(8, 12), 16);
             if (dataDecodedX > 32767) {
                 dataDecodedX = (-65536 + dataDecodedX) * 250 / 32768;
             } else {
@@ -58,12 +58,12 @@ public class PointServiceImpl implements IPointService {
             } else {
                 dataDecodedZ = dataDecodedZ * 250 / 32767;
             }
-            dataSeriesMap.put("acceleroX2", dataDecodedX);
-            dataSeriesMap.put("acceleroY2", dataDecodedY);
-            dataSeriesMap.put("acceleroZ2", dataDecodedZ);
-            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(0, 12).substring(0, 4), 16);
-            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(0, 12).substring(4, 8), 16);
-            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(0, 12).substring(8, 12), 16);
+            dataSeriesMap.put("GyrosX", dataDecodedX);
+            dataSeriesMap.put("GyrosY", dataDecodedY);
+            dataSeriesMap.put("GyrozZ", dataDecodedZ);
+            dataDecodedX = (double) Integer.parseInt(dataDecoded.substring(124, 136).substring(0, 4), 16);
+            dataDecodedY = (double) Integer.parseInt(dataDecoded.substring(124, 136).substring(4, 8), 16);
+            dataDecodedZ = (double) Integer.parseInt(dataDecoded.substring(124, 136).substring(8, 12), 16);
             if (dataDecodedX > 32767) {
                 dataDecodedX = (-65536 + dataDecodedX) * 2 / 32768;
             } else {
@@ -80,9 +80,9 @@ public class PointServiceImpl implements IPointService {
                 dataDecodedZ = dataDecodedZ * 2 / 32767;
             }
 
-            dataSeriesMap.put("acceleroX3", dataDecodedX);
-            dataSeriesMap.put("acceleroY3", dataDecodedY);
-            dataSeriesMap.put("acceleroZ3", dataDecodedZ);
+            dataSeriesMap.put("magnetoX", dataDecodedX);
+            dataSeriesMap.put("magnetoY", dataDecodedY);
+            dataSeriesMap.put("magnetoZ", dataDecodedZ);
         }
         return dataSeriesMap;
     }
