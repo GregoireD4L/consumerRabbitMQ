@@ -1,6 +1,8 @@
 package com.example.dataforlife.consumer.pointservice;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -192,6 +194,7 @@ public class PointServiceImpl implements IPointService {
     @Override
     public List<InfluxPoint> getPointsArrayList(String data, Instant time) {
         List<InfluxPoint> list = new ArrayList<>();
+        long timeOfInstant = time.toEpochMilli();
         for(int i=0;i<10;i++) {
             HashMap<String, Object> map = new HashMap<>();
             map.putAll(this.getPointsMapAccelero(data));
@@ -202,7 +205,11 @@ public class PointServiceImpl implements IPointService {
             map.putAll(this.getPointsMapTemperature(data));
             map.putAll(this.getPointsMapSpo2Chan1(data));
             map.putAll(this.getPointsMapSpo2Chan2(data));
-            list.add(new InfluxPoint(map, time));
+
+            list.add(new InfluxPoint(map, Instant.ofEpochMilli(timeOfInstant)));
+            timeOfInstant+=2;
+
+
         }
         return list;
     }
