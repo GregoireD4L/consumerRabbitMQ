@@ -139,7 +139,6 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
             cpt++;
             Point p = null;
             try {
-                System.out.println("in");
                 p = Point.measurement(measurement).time(point.getTimestamp().toEpochMilli(), TimeUnit.MILLISECONDS).fields(point.getValue()).addField("ID", Encrypter.encrypt(idUser)).addField("timestamp", point.getTimestamp().toEpochMilli()).build();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
