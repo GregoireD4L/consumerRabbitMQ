@@ -1,7 +1,7 @@
 package com.example.dataforlife.consumer.influxdb;
 
 
-import com.example.dataforlife.consumer.pointservice.InfluxPoint;
+import com.example.dataforlife.consumer.model.InfluxPoint;
 import com.example.dataforlife.consumer.security.Encrypter;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.BatchPoints;
@@ -105,28 +105,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
 
         if (pointList != null) {
             if (!pointList.isEmpty()) {
-
                     createPoints(measurement, pointList, idUser);
-
-
-                //if (!points.isEmpty()) {
-
-
-                //  write(bp);
-
-
-                        /* try {
-                             System.out.println("in");
-                             while(t.isAlive())
-                                 TimeUnit.SECONDS.sleep(2);
-                             System.out.println("out");
-                         } catch (InterruptedException e) {
-                             e.printStackTrace();
-                         }*/
-
-                //}
-
-
             }
         }
     }
@@ -140,37 +119,15 @@ public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBe
             Point p = null;
             try {
                 p = Point.measurement(measurement).time(point.getTimestamp().toEpochMilli(), TimeUnit.MILLISECONDS).fields(point.getValue()).addField("ID", Encrypter.encrypt(idUser)).addField("timestamp", point.getTimestamp().toEpochMilli()).build();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
+            } catch (UnsupportedEncodingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
             batchPoints.point(p);
-
-
         }
-      //  System.out.println(batchPoints);
-       // System.out.println("batchpoint : " + batchPoints.getPoints().size() + "           " + pointList.size()+"     "+batchPoints.getPoints().get(0).toString()+"     "+batchPoints.getPoints().get(1).toString());
-
-
 
         influxDB.write(batchPoints);
         influxDB.flush();
 
 
     }
-    /*@Override
-    public void afterPropertiesSet() throws Exception {
-        influxDBTemplate.createDatabase();
-    }*/
 }

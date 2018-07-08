@@ -1,12 +1,7 @@
 package com.example.dataforlife.consumer.influxdb;
 
-import com.example.dataforlife.consumer.pointservice.IPointService;
-import com.example.dataforlife.consumer.pointservice.InfluxPoint;
-import org.influxdb.dto.BatchPoints;
-import org.influxdb.dto.Point;
+import com.example.dataforlife.consumer.model.InfluxPoint;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**

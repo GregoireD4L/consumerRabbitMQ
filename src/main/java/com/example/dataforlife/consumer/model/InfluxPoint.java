@@ -1,4 +1,4 @@
-package com.example.dataforlife.consumer.pointservice;
+package com.example.dataforlife.consumer.model;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -29,4 +29,7 @@ public class InfluxPoint {
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
+
+
+
 }

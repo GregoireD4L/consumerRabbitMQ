@@ -1,5 +1,7 @@
 package com.example.dataforlife.consumer.pointservice;
 
+import com.example.dataforlife.consumer.model.InfluxPoint;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;

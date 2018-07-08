@@ -1,7 +1,8 @@
 package com.example.dataforlife.consumer.pointservice;
 
+import com.example.dataforlife.consumer.model.InfluxPoint;
+
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
