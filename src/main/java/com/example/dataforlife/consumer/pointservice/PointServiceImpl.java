@@ -188,7 +188,7 @@ public class PointServiceImpl implements IPointService {
             final String[] dataList = data.split("\n");
             final String dataDecoded = dataList[dataList.length - 1].replace(" ", "");
             final double dataDecodedTemp = Integer.parseInt(dataDecoded.substring(196, 200), 16);
-            dataSeriesMap.put("temp",dataDecodedTemp);
+            dataSeriesMap.put("temp",dataDecodedTemp/256);
         }
         return dataSeriesMap;
     }
