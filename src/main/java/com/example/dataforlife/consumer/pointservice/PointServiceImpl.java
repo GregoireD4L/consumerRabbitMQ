@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/***
+ *  Created by Nicolas Sirac
+ *  Updated by Vartan Kokoghlanian
+ ****/
 public class PointServiceImpl implements IPointService {
 
     public HashMap<String, Double> getPointsMapAccelero(String data) {
