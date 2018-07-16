@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * Created by kokoghlanian on 08/05/2018.
  */
 @Service
-public class InfluxDBServiceImpl implements IInfluxDBService {//, InitializingBean {
+public class InfluxDBServiceImpl implements IInfluxDBService {
 
     static int cpt = 0;
     @Autowired
