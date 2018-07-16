@@ -4,6 +4,9 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ *  Created by Nicolas Sirac
+ ****/
 public class InfluxPoint {
    private HashMap<String,Object> value;
    private Instant timestamp;
