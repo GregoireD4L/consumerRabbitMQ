@@ -46,9 +46,6 @@ public class ReceiveHandlerImpl implements IReceiveHandler {
                 influxDBService.createPointInInflux(points, "allPoints", message.getId());
                 points.clear();
             }
-
-            //}
-           // System.out.println(++cpt + "   " + points.size() + "   " + message.getTime());
         }
 
     }
