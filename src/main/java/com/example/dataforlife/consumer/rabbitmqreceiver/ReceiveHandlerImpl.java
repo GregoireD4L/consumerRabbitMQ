@@ -22,7 +22,6 @@ import java.util.List;
 
 @Service
 public class ReceiveHandlerImpl implements IReceiveHandler {
-   // static int cpt = 0;
     static List<InfluxPoint> points;
     @Autowired
     IInfluxDBService influxDBService;
