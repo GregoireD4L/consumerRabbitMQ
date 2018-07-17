@@ -29,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class InfluxDBServiceImpl implements IInfluxDBService {
 
-    static int cpt = 0;
     @Autowired
     InfluxDBTemplate<Point> influxDBTemplate;
 
@@ -39,7 +38,6 @@ public class InfluxDBServiceImpl implements IInfluxDBService {
 
     public void write(Point point) {
         InfluxDB influxDB = InfluxSingleton.getInstance();
-        //influxDBTemplate.write(point);
         influxDB.write(point);
         System.out.println(point.toString());
         try {
@@ -113,9 +111,7 @@ public class InfluxDBServiceImpl implements IInfluxDBService {
     private void createPoints(String measurement, List<InfluxPoint> pointList, String idUser) {
         InfluxDB influxDB = InfluxSingleton.getInstance();
         BatchPoints batchPoints = BatchPoints.database("dataforlifeDB").build();
-        int cpt=0;
         for (InfluxPoint point : pointList) {
-            cpt++;
             Point p = null;
             try {
                 p = Point.measurement(measurement).time(point.getTimestamp().toEpochMilli(), TimeUnit.MILLISECONDS).fields(point.getValue()).addField("ID", Encrypter.encrypt(idUser)).addField("timestamp", point.getTimestamp().toEpochMilli()).build();
